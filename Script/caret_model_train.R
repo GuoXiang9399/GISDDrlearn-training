@@ -191,7 +191,7 @@
     rfGrid <- expand.grid(splitrule = c( "gini", "extratrees", "hellinger"))
   #random forest
     rffit_GISDD.1.3.2_D3_Clade <- train(
-      x = train.Model_rawdata[,-1486],
+      x = train.Model_rawdata[,-1480],
       y = train.Model_rawdata$Clade,
       method = "ranger",
       trControl = trControl,
