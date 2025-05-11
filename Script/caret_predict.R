@@ -7,3 +7,11 @@ library(tidyr)
 library(ape)
 library(caret)
 library(ranger)
+
+  rffit_GISDD.1.3.2_D1_Clade <- load("Result/rffit_GISDD.1.3.2_D1_Clade.rda")
+  
+  
+  
+  
+  
+  

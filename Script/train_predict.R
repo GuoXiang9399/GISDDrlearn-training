@@ -14,8 +14,14 @@
   library(modeldata)
   library(doParallel)
 ###############################################################################
-load("Result/rffit_GISDD.1.3.2_D3_Clade.rda")
+  GISDD <- read_excel("Data/GISDD.version.1.3.2.xlsx")
+  GISDD <- unite(GISDD,Virus_Type,Subgenotype,col="Subgenotype",sep="_",remove=F)
+  GISDD <- unite(GISDD,Virus_Type,Clade,col="Clade",sep="_",remove=F)
+  GISDD_Subgenotype <- GISDD[,c("Accession","Subgenotype")]
+  GISDD_Clade <- GISDD[,c("Accession","Clade")]
 ###############################################################################
+  load("Result/rffit_GISDD.1.3.2_D1_Subgenotype.rda")
+  load("Result/rffit_GISDD.1.3.2_D1_Clade.rda")
 ###############################################################################
 #DENV-1
   ggplot(rffit_GISDD.1.3.2_D1_Subgenotype)+
@@ -62,3 +68,17 @@ load("Result/rffit_GISDD.1.3.2_D3_Clade.rda")
     Sequence=labels.DNAbin(dfraw),
     Pred_Subgenotype=predictions1,
     model=c("rffit_GISDD.1.3.2_Subgenotype"))
+  
+  
+  
+  
+  
+  ggplot(rffit_GISDD.1.3.2_D1_Subgenotype)+
+    scale_x_continuous(breaks = c(seq(0,1500,by=300)))+
+    scale_y_continuous(limits = c(0.5,1.0),breaks = c(seq(0,1,by=0.1)))+
+    theme_classic()+
+    theme(legend.position = "top")
+  
+  
+  
+  
