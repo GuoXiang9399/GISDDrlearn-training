@@ -23,12 +23,6 @@
   cl <- makePSOCKcluster(24)
   registerDoParallel(cl)
 ###############################################################################
-  GISDD <- read_excel("Data/GISDD.version.1.3.2.xlsx")
-  GISDD <- unite(GISDD,Virus_Type,Subgenotype,col="Subgenotype",sep="_",remove=F)
-  GISDD <- unite(GISDD,Virus_Type,Clade,col="Clade",sep="_",remove=F)
-  GISDD_Subgenotype <- GISDD[,c("Accession","Subgenotype")]
-  GISDD_Clade <- GISDD[,c("Accession","Clade")]
-###############################################################################
   load("Result/rffit_GISDD.1.3.2_D1_Subgenotype.rda")
   load("Result/rffit_GISDD.1.3.2_D1_Clade.rda")
   load("Result/rffit_GISDD.1.3.2_D2_Subgenotype.rda")
@@ -41,49 +35,64 @@
 #data
   load("Result/rffit_test_rawdata_D1_Subgenotype.rda")
   test.Model_rawdata$predic <- predict(
-    rffit_GISDD.1.3.2_D1_Subgenotype,
-    newdata=test.Model_rawdata)
-  test.Model_rawdata$Subgenotype <- as.factor(test.Model_rawdata$Subgenotype)
-  test.Model_rawdata$predic <- as.factor(test.Model_rawdata$predic)
-###############################################################################
+    rffit_GISDD.1.3.2_D1_Subgenotype,newdata=test.Model_rawdata)
 #data
+  load("Result/rffit_test_rawdata_D2_Subgenotype.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D2_Subgenotype,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D3_Subgenotype.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D3_Subgenotype,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D4_Subgenotype.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D4_Subgenotype,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D1_Clade.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D1_Clade,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D2_Clade.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D2_Clade,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D3_Clade.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D3_Clade,newdata=test.Model_rawdata)
+#data
+  load("Result/rffit_test_rawdata_D4_Clade.rda")
+  test.Model_rawdata$predic <- predict(
+    rffit_GISDD.1.3.2_D4_Clade,newdata=test.Model_rawdata)
+#data
+  test.Model_rawdata$Subgenotype <- factor(test.Model_rawdata$Subgenotype, ordered = TRUE)
+  test.Model_rawdata$predic <- factor(test.Model_rawdata$predic, ordered = TRUE)
+  test.Model_rawdata$predic <- factor(test.Model_rawdata$predic, 
+                                      levels = levels(test.Model_rawdata$Subgenotype))
+#comput
+  confusionMatrix_Result <- 
+    confusionMatrix(test.Model_rawdata$Subgenotype,  
+                    test.Model_rawdata$predic)
+  confusionMatrix_Result_overall <- data.frame(confusionMatrix_Result$overall)       
+  confusionMatrix_Result_overall <- t.data.frame(confusionMatrix_Result_overall)
+  confusionMatrix_Result_overall <- data.frame(confusionMatrix_Result_overall)
+#data
+  confusionMatrix_Result_overall$model <- "D1_Subgenotype"
+  confusionMatrix_Result_overall$model <- "D2_Subgenotype"
+  confusionMatrix_Result_overall$model <- "D3_Subgenotype"
+  confusionMatrix_Result_overall$model <- "D4_Subgenotype"
+  confusionMatrix_Result_overall$model <- "D1_Clade"
+  confusionMatrix_Result_overall$model <- "D2_Clade"
+  confusionMatrix_Result_overall$model <- "D3_Clade"
+  confusionMatrix_Result_overall$model <- "D4_Clade"
   
-  roc(converted_data$Subgenotype, converted_data$predic)
-
-  roc(test.Model_rawdata$Subgenotype,test.Model_rawdata$predic)
-  multiclass.roc(test.Model_rawdata$Subgenotype,test.Model_rawdata$predic)
-  
-  roc1 <-  multiclass.roc(test.Model_rawdata$Subgenotype,  
-                 test.Model_rawdata$predic)
-  ggroc(roc1)
-  
-
-  confusionMatrixTest <- confusionMatrix(test.Model_rawdata$Subgenotype,  
-                  test.Model_rawdata$predic)
-
-  precision(test.Model_rawdata, Subgenotype, predic, estimator = "micro")
+  SummaryData <- data.frame(confusionMatrix_Result$byClass)
   
   
-  rf_pred <- data.frame(Subgenotype=test.Model_rawdata$Subgenotype,  
-                        predic=test.Model_rawdata$predic)
-  
-  colnames(rf_pred) <- paste(colnames(rf_pred), "_pred_RF")
-  
-  roc_res <- multi_pr(rf_pred, force_diag = T)
-  plot_roc_data(roc_res)
-
-  
-
-  preresult <-data.frame(table(test.Model_rawdata$predic,test.Model_rawdata$Subgenotype))  
-  
-  
-  roc_auc(data = test.Model_rawdata,truth = Subgenotype,1:1485)
-  
-  
-  rf.pred.prob <- predict(rffit_GISDD.1.3.2_D1_Subgenotype.rda, 
-                          newdata=test.Model_rawdata)
-
-  
+#summary  
+  confusionMatrix_summary <- confusionMatrix_Result_overall
+  confusionMatrix_summary <- 
+    rbind(confusionMatrix_summary,confusionMatrix_Result_overall)
   
   
   
