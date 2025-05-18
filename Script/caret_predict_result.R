@@ -88,7 +88,7 @@
   confusionMatrix_Result_overall$model <- "D4_Clade"
   
   SummaryData <- data.frame(confusionMatrix_Result$byClass)
-  write.csv(SummaryData,"Result/ConMatrix_D2_Subgenotype")
+   write.csv(SummaryData,"Result/ConMatrix_D2_Subgenotype")
   
 #summary  
   confusionMatrix_summary <- confusionMatrix_Result_overall
