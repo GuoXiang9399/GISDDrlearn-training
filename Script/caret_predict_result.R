@@ -64,6 +64,7 @@
   load("Result/rffit_test_rawdata_D4_Clade.rda")
   test.Model_rawdata$predic <- predict(
     rffit_GISDD.1.3.2_D4_Clade,newdata=test.Model_rawdata)
+###############################################################################
 #data
   test.Model_rawdata$Subgenotype <- factor(test.Model_rawdata$Subgenotype, ordered = TRUE)
   test.Model_rawdata$predic <- factor(test.Model_rawdata$predic, ordered = TRUE)
@@ -87,7 +88,7 @@
   confusionMatrix_Result_overall$model <- "D4_Clade"
   
   SummaryData <- data.frame(confusionMatrix_Result$byClass)
-  
+  write.csv(SummaryData,"Result/ConMatrix_D2_Subgenotype")
   
 #summary  
   confusionMatrix_summary <- confusionMatrix_Result_overall
