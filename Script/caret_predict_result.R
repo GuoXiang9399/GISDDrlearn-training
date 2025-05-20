@@ -86,14 +86,18 @@
   confusionMatrix_Result_overall$model <- "D2_Clade"
   confusionMatrix_Result_overall$model <- "D3_Clade"
   confusionMatrix_Result_overall$model <- "D4_Clade"
-  
-  SummaryData <- data.frame(confusionMatrix_Result$byClass)
-   write.csv(SummaryData,"Result/ConMatrix_D2_Subgenotype")
-  
-#summary  
+###############################################################################
+#data  
   confusionMatrix_summary <- confusionMatrix_Result_overall
+#data
   confusionMatrix_summary <- 
     rbind(confusionMatrix_summary,confusionMatrix_Result_overall)
+   write.csv(confusionMatrix_summary,"Result/confusionSummary.csv")
+#data
+  SummaryData <- data.frame(confusionMatrix_Result$byClass)
+   write.csv(SummaryData,"Result/ConMatrix_D4_Subgenotype")
+  
+#summary  
   
   
   
